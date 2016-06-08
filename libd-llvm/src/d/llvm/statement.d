@@ -59,6 +59,9 @@ struct StatementGen {
 				define(i.var);
 				break;
 			
+			case Destroy:
+				break;
+			
 			case Evaluate:
 				genExpression(i.expr);
 				break;
