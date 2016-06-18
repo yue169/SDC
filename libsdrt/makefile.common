@@ -1,10 +1,12 @@
 # Common definitions
 
 LIBSDRT_GC_SRC = $(wildcard $(LIBSDRT_ROOT)/src/d/gc/*.d)
+LIBSDRT_SYNC_SRC = $(wildcard $(LIBSDRT_ROOT)/src/d/sync/*.d)
 LIBSDRT_STDC_SRC = $(wildcard $(LIBSDRT_ROOT)/src/core/stdc/*.d)
 LIBSDRT_RT_SRC = $(wildcard $(LIBSDRT_ROOT)/src/d/rt/*.d)
 
 LIBSDRT_GC_OBJ = $(LIBSDRT_GC_SRC:$(LIBSDRT_ROOT)/src/d/gc/%.d=obj/gc/%.o)
+LIBSDRT_SYNC_OBJ = $(LIBSDRT_SYNC_SRC:$(LIBSDRT_ROOT)/src/d/sync/%.d=obj/sync/%.o)
 LIBSDRT_STDC_OBJ = $(LIBSDRT_STDC_SRC:$(LIBSDRT_ROOT)/src/core/stdc/%.d=obj/stdc/%.o)
 LIBSDRT_RT_OBJ = $(LIBSDRT_RT_SRC:$(LIBSDRT_ROOT)/src/d/rt/%.d=obj/rt/%.o)
 
@@ -20,7 +22,7 @@ LIBSDRT_OSX_OBJ = $(LIBSDRT_OSX_OBJ_C) $(LIBSDRT_OSX_OBJ_D)
 LIBSDRT_X64_SRC = $(wildcard $(LIBSDRT_ROOT)/src/sys/x64/*.asm)
 LIBSDRT_X64_OBJ = $(LIBSDRT_X64_SRC:$(LIBSDRT_ROOT)/src/sys/x64/%.asm=obj/x64/%.o)
 
-LIBSDRT_DEPS = $(LIBSDRT_GC_OBJ) $(LIBSDRT_STDC_OBJ) $(LIBSDRT_RT_OBJ) $(LIBSDRT_X64_OBJ)
+LIBSDRT_DEPS = $(LIBSDRT_GC_OBJ) $(LIBSDRT_SYNC_OBJ) $(LIBSDRT_STDC_OBJ) $(LIBSDRT_RT_OBJ) $(LIBSDRT_X64_OBJ)
 ifeq ($(PLATFORM),Linux)
 	LIBSDRT_DEPS += $(LIBSDRT_LINUX_OBJ)
 endif
@@ -38,6 +40,10 @@ LIBSDRT_IMPORTS = -I$(LIBSDRT_ROOT)/src
 
 obj/gc/%.o: $(LIBSDRT_ROOT)/src/d/gc/%.d $(LIBSDRT_GC_SRC) $(LIBSDRT_EXTRA_DEPS)
 	@mkdir -p obj/gc
+	$(SDC) -c -o $@ $< $(SDFLAGS) $(LIBSDRT_IMPORTS)
+
+obj/sync/%.o: $(LIBSDRT_ROOT)/src/d/sync/%.d $(LIBSDRT_SYNC_SRC) $(LIBSDRT_EXTRA_DEPS)
+	@mkdir -p obj/sync
 	$(SDC) -c -o $@ $< $(SDFLAGS) $(LIBSDRT_IMPORTS)
 
 obj/linux/%.o: $(LIBSDRT_ROOT)/src/sys/linux/%.d $(LIBSDRT_LINUX_SRC) $(LIBSDRT_EXTRA_DEPS)

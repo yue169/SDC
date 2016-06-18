@@ -94,6 +94,7 @@ struct IntrinsicGen {
 			args[0],
 			args[1],
 			args[2],
+			// For now, all cas are sequentially consistents
 			LLVMAtomicOrdering.SequentiallyConsistent,
 		);
 	}
