@@ -134,7 +134,7 @@ struct ValueRangePropagator {
 					.repack(e.type.builtin)
 					.recast(e.type.builtin);
 			
-			case SPad, UPad :
+			case UPad, SPad :
 				return visit(e.expr).repack(e.type.builtin);
 			
 			case Qual, Exact :
@@ -595,7 +595,6 @@ static:
 	}
 }
 
-
 ulong getMask(BuiltinType t) in {
 	assert(canConvertToIntegral(t));
 } body {
@@ -936,4 +935,3 @@ unittest {
 	testSmod(ValueRange(34, 53), ValueRange(-32, -41), ValueRange(0, 53));
 	testSmod(ValueRange(42, -25), ValueRange(75, -13), ValueRange(long.min + 1, long.max));
 }
-
